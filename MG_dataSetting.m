@@ -1,27 +1,4 @@
 function MG = MG_dataSetting()
-
-% Components: 
-MG.numofUG = 1;	% Utility grid
-MG.numofCL = 1; % Clutster of neighbourhood
-MG.numofES = 1; % Energy storage
-MG.numofEV = 0; % Electric Vehicle
-MG.numofRE = 1; % Renewables
-MG.numofL0 = 1; % Load type 0 (fixed load)
-MG.numofL1 = 3; % Load type 1 (controllable and interruptible load) 
-MG.numofL2 = 2; % Load type 2 (controllable and uninterruptible load)
-
-%fprintf('UG: %d\nCluster: %d\nES: %d\n',MG.numofUG,MG.numofUG,MG.numofUG);
-
-
-MG.A.all = [];
-MG.b.all = [];
-MG.Aeq.all = [];
-MG.beq.all = [];
-MG.lb = [];
-MG.ub = [];
-
-
-
 %% Variables indices:
 %MG.UG_in, MG.UG_out, MG.UG_flg;
 %MG.CL_in, MG.CL_out, MG.CL_flg;
@@ -31,10 +8,27 @@ MG.ub = [];
 %MG.L1_out; (flg)
 %MG.L2_out; (flg)
 %MG.L2_ind_s; MG.L2_ind_e;
-
-%%
+%% 
 MG.horizon = 24;
-%%Data
+%% Components
+MG.numofUG = 1;	% Utility grid
+MG.numofCL = 1; % Clutster of neighbourhood
+MG.numofES = 1; % Energy storage
+MG.numofEV = 0; % Electric Vehicle
+MG.numofRE = 1; % Renewables
+MG.numofL0 = 1; % Load type 0 (fixed load)
+MG.numofL1 = 3; % Load type 1 (controllable and interruptible load) 
+MG.numofL2 = 2; % Load type 2 (controllable and uninterruptible load)
+
+%% Constraint Variables
+MG.A.all = [];
+MG.b.all = [];
+MG.Aeq.all = [];
+MG.beq.all = [];
+MG.lb = [];
+MG.ub = [];
+
+%% Data
 MG.price = [0.2887
 0.2172
 0.1729
@@ -169,5 +163,4 @@ MG.EV.ub = repmat(MG.EV.ub, MG.horizon, 1);
 MG.SOC_intl = [45]/4;
 MG.SOC_max = [90]/4;
 MG.SOC_min = [10]/4;
-
 end
