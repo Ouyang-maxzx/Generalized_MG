@@ -20,7 +20,7 @@ A_UG_flg = zeros(numofRows, MG.horizon*MG.numofUG);
 %CL:
 A_CL_in  = eye( numofRows );
 A_CL_out = zeros( numofRows,MG.horizon*MG.numofCL );
-A_CL_flg = -diag( MG.CL.ub );
+A_CL_flg = -diag( MG.ub.CL_in );
 %ES: 
 A_ES_in  = zeros(numofRows, MG.horizon*MG.numofES);
 A_ES_out = zeros(numofRows, MG.horizon*MG.numofES);

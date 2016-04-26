@@ -28,7 +28,7 @@ if MG.numofEV >0
     %EV: 
     A_EV_in  = eye( numofRows );
     A_EV_out = zeros( numofRows,MG.horizon*MG.numofEV );
-    A_EV_flg = -diag( MG.EV.ub );
+    A_EV_flg = -diag( MG.ub.EV_in );
     %RE: (flg)
     A_RE_in  = zeros(numofRows, MG.horizon*MG.numofRE);
     %L0: (flg)

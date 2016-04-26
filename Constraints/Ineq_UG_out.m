@@ -16,7 +16,7 @@ numofRows = MG.horizon*MG.numofUG;
 %UG:
 A_UG_in  = zeros( numofRows,MG.horizon*MG.numofUG );
 A_UG_out = -eye( numofRows );
-A_UG_flg = -diag( MG.UG.lb );
+A_UG_flg = -diag( MG.lb.UG_out );
 %CL:
 A_CL_in  = zeros(numofRows, MG.horizon*MG.numofCL);
 A_CL_out = zeros(numofRows, MG.horizon*MG.numofCL);
@@ -52,7 +52,7 @@ A = [ ...
     A_L2_in, ...
     A_L2_flg_s, A_L2_flg_e ];
 
-b = -MG.UG.lb;
+b = -MG.lb.UG_out;
 
 %Indicator for L1 ends
 MG.A.UG_out = A;

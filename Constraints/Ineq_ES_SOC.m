@@ -61,8 +61,8 @@ A_min = [ ...
     A_L2_in, ...
     A_L2_flg_s, A_L2_flg_e ];
 A_max = -A_min;
-b_min = repmat(-MG.ES.SOC_min+MG.ES.SOC_0, MG.horizon*MG.numofES, 1);
-b_max = repmat( MG.ES.SOC_max-MG.ES.SOC_0, MG.horizon*MG.numofES, 1);
+b_min = reshape( repmat(-MG.ES.SOC_min+MG.ES.SOC_0, MG.horizon, 1), [], 1);
+b_max = reshape( repmat( MG.ES.SOC_max-MG.ES.SOC_0, MG.horizon, 1), [], 1);
 
 MG.A.ES_SOC_in  = A_min;
 MG.A.ES_SOC_out = A_max;

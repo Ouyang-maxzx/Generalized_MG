@@ -12,7 +12,7 @@ function MG_out = Ineq_ES_out( MG )
 %MG.L2_out; (flg)
 %MG.L2_ind_s; MG.L2_ind_e;
 
-numofRows = MG.horizon*MG.numofUG;
+numofRows = MG.horizon*MG.numofES;
 %UG:
 A_UG_in  = zeros(numofRows, MG.horizon*MG.numofUG);
 A_UG_out = zeros(numofRows, MG.horizon*MG.numofUG);
@@ -24,7 +24,7 @@ A_CL_flg = zeros(numofRows, MG.horizon*MG.numofCL);
 %ES: 
 A_ES_in  = zeros( numofRows,MG.horizon*MG.numofES );
 A_ES_out = -eye( numofRows );
-A_ES_flg = -diag( MG.ES.lb );
+A_ES_flg = -diag( MG.lb.ES_out );
 %EV: 
 A_EV_in  = zeros(numofRows, MG.horizon*MG.numofEV);
 A_EV_out = zeros(numofRows, MG.horizon*MG.numofEV);
@@ -52,7 +52,7 @@ A = [ ...
     A_L2_in, ...
     A_L2_flg_s, A_L2_flg_e ];
 
-b = -MG.ES.lb;
+b = -MG.lb.ES_out;
 
 %Indicator for L1 ends
 MG.A.ES_out = A;

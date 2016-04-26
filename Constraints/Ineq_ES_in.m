@@ -22,14 +22,9 @@ A_CL_in  = zeros(numofRows, MG.horizon*MG.numofCL);
 A_CL_out = zeros(numofRows, MG.horizon*MG.numofCL);
 A_CL_flg = zeros(numofRows, MG.horizon*MG.numofCL);
 %ES: 
-A_ES_in  = zeros(numofRows, MG.horizon*MG.numofES);
-A_ES_out = zeros(numofRows, MG.horizon*MG.numofES);
-A_ES_flg = zeros(numofRows, MG.horizon*MG.numofES);
-
-
 A_ES_in  = eye( numofRows );
 A_ES_out = zeros( numofRows,MG.horizon*MG.numofES );
-A_ES_flg = -diag( MG.ES.ub );
+A_ES_flg = -diag( MG.ub.ES_in );
 %EV: 
 A_EV_in  = zeros(numofRows, MG.horizon*MG.numofEV);
 A_EV_out = zeros(numofRows, MG.horizon*MG.numofEV);

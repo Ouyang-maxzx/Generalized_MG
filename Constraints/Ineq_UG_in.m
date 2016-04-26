@@ -16,7 +16,7 @@ numofRows = MG.horizon*MG.numofUG;
 %UG:
 A_UG_in  = eye( numofRows );
 A_UG_out = zeros( numofRows,MG.horizon*MG.numofUG );
-A_UG_flg = -diag( MG.UG.ub );
+A_UG_flg = -diag( MG.ub.UG_in );
 %CL:
 A_CL_in  = zeros(numofRows, MG.horizon*MG.numofCL);
 A_CL_out = zeros(numofRows, MG.horizon*MG.numofCL);

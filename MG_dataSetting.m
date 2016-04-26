@@ -13,23 +13,14 @@ MG.horizon = 24;
 %% Components
 MG.numofUG = 1;	% Utility grid
 MG.numofCL = 1; % Clutster of neighbourhood
-MG.numofES = 1; % Energy storage
+MG.numofES = 3; % Energy storage
 MG.numofEV = 0; % Electric Vehicle
 MG.numofRE = 1; % Renewables
 MG.numofL0 = 1; % Load type 0 (fixed load)
 MG.numofL1 = 3; % Load type 1 (controllable and interruptible load) 
 MG.numofL2 = 2; % Load type 2 (controllable and uninterruptible load)
 
-MG.UG.name = {'Utility'};
-MG.CL.name = {'Cluster1'};
-MG.ES.name = {'ES1'};
 MG.EV.name = {'EV1'};
-MG.RE.name = {'PV'};
-MG.L0.name = {'Base_Load'};
-MG.L1.name = {'Dishwasher','Washing_Machine', 'Vacuum_Cleaner' };
-MG.L2.name = {'L2_Device1', 'L2_Device2'};
-MG.nameall = [MG.UG.name(1:MG.numofUG), MG.CL.name(1:MG.numofCL), MG.ES.name(1:MG.numofES), MG.EV.name(1:MG.numofEV), MG.RE.name(1:MG.numofRE), ...
-    MG.L0.name(1:MG.numofL0), MG.L1.name(1:MG.numofL1), MG.L2.name(1:MG.numofL2) ];
 
 %% Indicate the intcon:
 MG.intcon = [ 
@@ -51,22 +42,17 @@ MG.ub = [];
 %% Data
 MG = importData (MG, 'MG1.xlsx');
 
-
-MG.CL.lb = [-1];
-MG.CL.ub = [1];
+MG.CL.lb = [0 0];
+MG.CL.ub = [0 0]; %Initial state:BECAREFULL
 
 MG.EV.lb = [-4];
 MG.EV.ub = [4];
+MG.nameall = [MG.UG.name(1:MG.numofUG), MG.CL.name(1:MG.numofCL), MG.ES.name(1:MG.numofES), MG.EV.name(1:MG.numofEV), MG.RE.name(1:MG.numofRE), ...
+    MG.L0.name(1:MG.numofL0), MG.L1.name(1:MG.numofL1), MG.L2.name(1:MG.numofL2) ];
 
 %Reshape the contraints
-MG.UG.lb = reshape( repmat(MG.UG.lb(1:MG.numofUG), MG.horizon, 1), [], 1 );
-MG.UG.ub = reshape( repmat(MG.UG.ub(1:MG.numofUG), MG.horizon, 1), [], 1 );
-MG.CL.lb = reshape( repmat(MG.CL.lb(1:MG.numofCL), MG.horizon, 1), [], 1 );
-MG.CL.ub = reshape( repmat(MG.CL.ub(1:MG.numofCL), MG.horizon, 1), [], 1 );
-MG.ES.lb = reshape( repmat(MG.ES.lb(1:MG.numofES), MG.horizon, 1), [], 1 );
-MG.ES.ub = reshape( repmat(MG.ES.ub(1:MG.numofES), MG.horizon, 1), [], 1 );
-MG.EV.lb = reshape( repmat(MG.EV.lb(1:MG.numofEV), MG.horizon, 1), [], 1 );
-MG.EV.ub = reshape( repmat(MG.EV.ub(1:MG.numofEV), MG.horizon, 1), [], 1 );
+
+
 
 MG.ES.SOC_0 = MG.ES.SOC_0.*MG.ES.cap;
 MG.ES.SOC_max = MG.ES.SOC_max.*MG.ES.cap;
