@@ -20,114 +20,6 @@ MG.numofL0 = 1; % Load type 0 (fixed load)
 MG.numofL1 = 3; % Load type 1 (controllable and interruptible load) 
 MG.numofL2 = 2; % Load type 2 (controllable and uninterruptible load)
 
-%% Constraint Variables
-MG.A.all = [];
-MG.b.all = [];
-MG.Aeq.all = [];
-MG.beq.all = [];
-MG.lb = [];
-MG.ub = [];
-
-%% Data
-MG.price = [0.2887
-0.2172
-0.1729
-0.1748
-0.1888
-0.2074
-0.2781
-0.3125
-0.3642
-0.3768
-0.4904
-0.4197
-0.4517
-0.4431
-0.5605
-0.4422
-0.3459
-0.3066
-0.2849
-0.3099
-0.2983
-0.2174
-0.2279
-0.2088];
-MG.L0.value = -[2.835
-2.835
-2.835
-2.835
-3.435
-2.135
-1.845
-1.685
-1.685
-1.685
-1.985
-2.885
-1.685
-1.685
-1.685
-1.685
-2.335
-3.235
-3.435
-3.135
-3.435
-3.535
-2.865
-2.835];
-MG.L1.value  = -[2	0.7	0.6
-0	0	0
-0	0	0
-0	0	0
-0	0	0
-0	0	0
-0	0	0
-2	0.7	0
-2	0.7	0
-2	0.7	0.6
-0	0.7	0.6
-0	0.7	0.6
-0	0.7	0.6
-2	0.7	0.6
-2	0.7	0.6
-2	0.7	0.6
-0	0.7	0.6
-0	0.7	0.6
-0	0.7	0.6
-2	0.7	0.6
-2	0.7	0.6
-2	0.7	0
-0	0	0
-0	0	0
-];
-MG.RE.value = [0
-0
-0
-0
-0
-0
-0
-0
-0.27
-1.67
-2.62
-3.57
-3.95
-3.87
-3.23
-2.73
-1.18
-0
-0
-0
-0
-0
-0
-0
-];
-MG.L2.value = -0.01*[5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5;5,5,5];
 MG.UG.name = {'Utility'};
 MG.CL.name = {'Cluster1'};
 MG.ES.name = {'ES1'};
@@ -135,32 +27,48 @@ MG.EV.name = {'EV1'};
 MG.RE.name = {'PV'};
 MG.L0.name = {'Base_Load'};
 MG.L1.name = {'Dishwasher','Washing_Machine', 'Vacuum_Cleaner' };
-MG.L1.avbl_hours = [1,1,1];
 MG.L2.name = {'L2_Device1', 'L2_Device2'};
-MG.L2.avbl_hours = [2 10 3];
 MG.nameall = [MG.UG.name(1:MG.numofUG), MG.CL.name(1:MG.numofCL), MG.ES.name(1:MG.numofES), MG.EV.name(1:MG.numofEV), MG.RE.name(1:MG.numofRE), ...
     MG.L0.name(1:MG.numofL0), MG.L1.name(1:MG.numofL1), MG.L2.name(1:MG.numofL2) ];
-%MG.EV.name,
-MG.UG.lb = [-8];
-MG.UG.ub = [8];
-MG.CL.lb = [0];
-MG.CL.ub = [0];
-MG.ES.lb = [-4];
-MG.ES.ub = [4];
+
+%% Indicate the intcon:
+MG.intcon = [ 
+    MG.horizon*(2*MG.numofUG)+1:MG.horizon*(3*MG.numofUG), ... %UG
+    MG.horizon*(3*MG.numofUG+2*MG.numofCL)+1:MG.horizon*(3*MG.numofUG+3*MG.numofCL), ... %CL
+    MG.horizon*(3*MG.numofUG+3*MG.numofCL+2*MG.numofES)+1:MG.horizon*(3*MG.numofUG+3*MG.numofCL+3*MG.numofES), ... %ES
+    MG.horizon*(3*MG.numofUG+3*MG.numofCL+3*MG.numofES+2*MG.numofEV)+1:MG.horizon*(3*MG.numofUG+3*MG.numofCL+3*MG.numofES+3*MG.numofEV), ... %EV
+    MG.horizon*(3*MG.numofUG+3*MG.numofCL+3*MG.numofES+3*MG.numofEV)+1: ...
+    MG.horizon*(3*MG.numofUG+3*MG.numofCL+3*MG.numofES+3*MG.numofEV+MG.numofRE+MG.numofL0+MG.numofL1+MG.numofL2)+ ...%RE,L0,L1,L2, and
+    MG.numofL2*(MG.horizon+1) + MG.numofL2*(MG.horizon+1) ... %L2_s, L2_e
+    ];
+%% Constraint Variables
+MG.A.all = [];
+MG.b.all = [];
+MG.Aeq.all = [];
+MG.beq.all = [];
+MG.lb = [];
+MG.ub = [];
+%% Data
+MG = importData (MG, 'MG1.xlsx');
+
+
+MG.CL.lb = [-1];
+MG.CL.ub = [1];
+
 MG.EV.lb = [-4];
 MG.EV.ub = [4];
 
-%Reshape
-MG.UG.lb = repmat(MG.UG.lb, MG.horizon, 1);
-MG.UG.ub = repmat(MG.UG.ub, MG.horizon, 1);
-MG.CL.lb = repmat(MG.CL.lb, MG.horizon, 1);
-MG.CL.ub = repmat(MG.CL.ub, MG.horizon, 1);
-MG.ES.lb = repmat(MG.ES.lb, MG.horizon, 1);
-MG.ES.ub = repmat(MG.ES.ub, MG.horizon, 1);
-MG.EV.lb = repmat(MG.EV.lb, MG.horizon, 1);
-MG.EV.ub = repmat(MG.EV.ub, MG.horizon, 1);
+%Reshape the contraints
+MG.UG.lb = reshape( repmat(MG.UG.lb(1:MG.numofUG), MG.horizon, 1), [], 1 );
+MG.UG.ub = reshape( repmat(MG.UG.ub(1:MG.numofUG), MG.horizon, 1), [], 1 );
+MG.CL.lb = reshape( repmat(MG.CL.lb(1:MG.numofCL), MG.horizon, 1), [], 1 );
+MG.CL.ub = reshape( repmat(MG.CL.ub(1:MG.numofCL), MG.horizon, 1), [], 1 );
+MG.ES.lb = reshape( repmat(MG.ES.lb(1:MG.numofES), MG.horizon, 1), [], 1 );
+MG.ES.ub = reshape( repmat(MG.ES.ub(1:MG.numofES), MG.horizon, 1), [], 1 );
+MG.EV.lb = reshape( repmat(MG.EV.lb(1:MG.numofEV), MG.horizon, 1), [], 1 );
+MG.EV.ub = reshape( repmat(MG.EV.ub(1:MG.numofEV), MG.horizon, 1), [], 1 );
 
-MG.SOC_intl = [45]/4;
-MG.SOC_max = [90]/4;
-MG.SOC_min = [10]/4;
+MG.ES.SOC_0 = MG.ES.SOC_0.*MG.ES.cap;
+MG.ES.SOC_max = MG.ES.SOC_max.*MG.ES.cap;
+MG.ES.SOC_min = MG.ES.SOC_min.*MG.ES.cap;
 end

@@ -46,7 +46,7 @@ A_L0_in  = zeros(numofRows, MG.horizon*MG.numofL0);
 A_L1_in  = zeros(numofRows, MG.horizon*MG.numofL1);
 %L2: (flg)
 A_L2_in  = zeros(numofRows, MG.horizon*MG.numofL2);
-%L2: (flg_s)(flg_e)
+%L2: (flg_s) (flg_e)
 A_L2_flg_s = zeros(numofRows, (MG.horizon+1)*MG.numofL2);
 A_L2_flg_e = zeros(numofRows, (MG.horizon+1)*MG.numofL2);
 
@@ -61,8 +61,8 @@ A_min = [ ...
     A_L2_in, ...
     A_L2_flg_s, A_L2_flg_e ];
 A_max = -A_min;
-b_min = repmat(-MG.SOC_min+MG.SOC_intl, MG.horizon*MG.numofES, 1);
-b_max = repmat( MG.SOC_max-MG.SOC_intl, MG.horizon*MG.numofES, 1);
+b_min = repmat(-MG.ES.SOC_min+MG.ES.SOC_0, MG.horizon*MG.numofES, 1);
+b_max = repmat( MG.ES.SOC_max-MG.ES.SOC_0, MG.horizon*MG.numofES, 1);
 
 MG.A.ES_SOC_in  = A_min;
 MG.A.ES_SOC_out = A_max;
