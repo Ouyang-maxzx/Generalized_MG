@@ -2,8 +2,6 @@ clear;clc;
 
 MG = MG_dataSetting();
 
-%%Re-arrange the variables:
-MG = reArrange_X( MG );
 %% Equality constraints:
 %Power balance
 MG = Eq_Power( MG );
@@ -17,18 +15,25 @@ MG = Eq_L2_s( MG );
 MG = Eq_L2_e( MG );
 
 %% Inequality constraints: A*x<=b
+%Re-arrange the variables:
+MG = reArrange_X( MG );
+
+% ES SOC should be limited in a range wish upper and lower limits:
+MG = Ineq_ES_SOC( MG );
+MG = Ineq_ES_SOC_T( MG );
+
+% additional constraints for binaries in UG, CL, ES, EV:
 MG = Ineq_UG_in( MG );
 MG = Ineq_UG_out( MG );
-MG = Ineq_CL_in( MG );
-MG = Ineq_CL_out( MG );
+MG = Ineq_CL_in( MG );  %Particularly
+MG = Ineq_CL_out( MG ); %Particularly
 MG = Ineq_ES_in( MG );
 MG = Ineq_ES_out( MG );
-MG = Ineq_ES_SOC( MG );
 MG = Ineq_EV_in( MG );
 MG = Ineq_EV_out( MG );
+
 %% Inequality constraints: lb<=x<=ub
 MG = Ineq_X( MG ); 
-
 
 %% Objective function
 f = [ ...
@@ -42,14 +47,13 @@ f = [ ...
     zeros(1,MG.horizon*MG.numofL2), zeros(1, MG.numofL2*(MG.horizon+1)), zeros(1, MG.numofL2*(MG.horizon+1)) ];
 
 %% Calculation: MILP
-[x,fval,exitflag,output] = intlinprog(f,MG.intcon,...
+[MG.x,fval,exitflag,output] = intlinprog(f,MG.intcon,...
     MG.A.all,MG.b.all,...
     MG.Aeq.all,MG.beq.all, ...
     MG.lb.all,MG.ub.all);
 
 %% Shape the results
-MG = shapeResults( x, MG );
-
-testp = array2table(MG.result, ...
+MG = shapeResults( MG );
+MG = cal_SOC(MG);
+resultTable = array2table(MG.result, ...
     'VariableNames',MG.nameall);
-

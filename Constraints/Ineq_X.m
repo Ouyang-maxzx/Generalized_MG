@@ -9,7 +9,9 @@ function MG_out = Ineq_X( MG )
 %MG.L1_out; (flg)
 %MG.L2_out; (flg)
 %MG.L2_ind_s; MG.L2_ind_e;
+
 %% Inequality constraints: lb<=x<=ub
+
 %Total
 MG.lb.all = [ ...
     MG.lb.UG_in; MG.lb.UG_out; MG.lb.UG_flg; ...

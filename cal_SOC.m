@@ -1,4 +1,4 @@
-function MG_out = Ineq_ES_SOC( MG )
+function MG_out = cal_SOC( MG )
 %UNTITLED10 Summary of this function goes here
 %   Detailed explanation goes here
 %% Variables indices:
@@ -62,17 +62,13 @@ A_min = [ ...
     A_L2_flg_s, A_L2_flg_e ];
 A_max = -A_min;
 
-b_min = reshape( repmat(-MG.ES.SOC_min+MG.ES.SOC_0, MG.horizon, 1), [], 1);
-b_max = reshape( repmat( MG.ES.SOC_max-MG.ES.SOC_0, MG.horizon, 1), [], 1);
+Accu_SOC = reshape([A_min; A_max]*MG.x,MG.horizon,2*MG.numofES);
+
+MG.SOC_List = ( -Accu_SOC( 1:MG.horizon, 1:MG.numofES)+repmat(MG.ES.SOC_0, MG.horizon, 1) ) ./ ...
+    repmat(MG.ES.cap, MG.horizon, 1) .* 100 ;
+MG.SOC_List = [MG.ES.SOC_0./MG.ES.cap .*100; MG.SOC_List ];
 
 
-MG.A.ES_SOC_in  = A_min;
-MG.A.ES_SOC_out = A_max;
-MG.b.ES_SOC_in = b_min;
-MG.b.ES_SOC_in = b_max;
-
-MG.A.all = [ MG.A.all; A_min; A_max ];
-MG.b.all = [ MG.b.all; b_min; b_max ];
 
 MG_out = MG;
 end

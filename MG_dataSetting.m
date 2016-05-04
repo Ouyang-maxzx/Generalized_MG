@@ -32,7 +32,7 @@ MG.intcon = [
     MG.horizon*(3*MG.numofUG+3*MG.numofCL+3*MG.numofES+3*MG.numofEV+MG.numofRE+MG.numofL0+MG.numofL1+MG.numofL2)+ ...%RE,L0,L1,L2, and
     MG.numofL2*(MG.horizon+1) + MG.numofL2*(MG.horizon+1) ... %L2_s, L2_e
     ];
-%% Constraint Variables
+%% Constraint Variables (ititialization of matricies)
 MG.A.all = [];
 MG.b.all = [];
 MG.Aeq.all = [];
@@ -41,20 +41,19 @@ MG.lb = [];
 MG.ub = [];
 %% Data
 MG = importData (MG, 'MG1.xlsx');
-
+%{
 MG.CL.lb = [0 0];
-MG.CL.ub = [0 0]; %Initial state:BECAREFULL
+MG.CL.ub = [0 0]; %Initial state:BECAREFUL
+%}
 
 MG.EV.lb = [-4];
 MG.EV.ub = [4];
 MG.nameall = [MG.UG.name(1:MG.numofUG), MG.CL.name(1:MG.numofCL), MG.ES.name(1:MG.numofES), MG.EV.name(1:MG.numofEV), MG.RE.name(1:MG.numofRE), ...
     MG.L0.name(1:MG.numofL0), MG.L1.name(1:MG.numofL1), MG.L2.name(1:MG.numofL2) ];
 
-%Reshape the contraints
-
-
-
-MG.ES.SOC_0 = MG.ES.SOC_0.*MG.ES.cap;
+%Reshape the contraints for ES
 MG.ES.SOC_max = MG.ES.SOC_max.*MG.ES.cap;
 MG.ES.SOC_min = MG.ES.SOC_min.*MG.ES.cap;
+MG.ES.SOC_0 = MG.ES.SOC_0.*MG.ES.cap;
+MG.ES.SOC_T = MG.ES.SOC_T.*MG.ES.cap;
 end

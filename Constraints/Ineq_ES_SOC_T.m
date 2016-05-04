@@ -1,4 +1,4 @@
-function MG_out = Ineq_ES_SOC( MG )
+function MG_out = Ineq_ES_SOC_T( MG )
 %UNTITLED10 Summary of this function goes here
 %   Detailed explanation goes here
 %% Variables indices:
@@ -11,7 +11,7 @@ function MG_out = Ineq_ES_SOC( MG )
 %MG.L2_out; (flg)
 %MG.L2_ind_s; MG.L2_ind_e;
 
-numofRows = MG.horizon*MG.numofES;
+numofRows = MG.numofES;
 %ES SOC
 A_ES = [];
 for i = 1:1:MG.numofES
@@ -29,7 +29,7 @@ A_CL_flg = zeros(numofRows, MG.horizon*MG.numofCL);
 %ES: 
 A_ES = [];
 for i = 1:1:MG.numofES
-    A_ES = blkdiag(A_ES, tril(ones(MG.horizon),0));
+    A_ES = blkdiag(A_ES, ones(1,MG.horizon));
 end
 A_ES_in  = A_ES; 
 A_ES_out = A_ES; 
@@ -60,19 +60,11 @@ A_min = [ ...
     A_L1_in, ...
     A_L2_in, ...
     A_L2_flg_s, A_L2_flg_e ];
-A_max = -A_min;
 
-b_min = reshape( repmat(-MG.ES.SOC_min+MG.ES.SOC_0, MG.horizon, 1), [], 1);
-b_max = reshape( repmat( MG.ES.SOC_max-MG.ES.SOC_0, MG.horizon, 1), [], 1);
+b_min = reshape( -MG.ES.SOC_T+MG.ES.SOC_0, MG.numofES, 1 );
 
-
-MG.A.ES_SOC_in  = A_min;
-MG.A.ES_SOC_out = A_max;
-MG.b.ES_SOC_in = b_min;
-MG.b.ES_SOC_in = b_max;
-
-MG.A.all = [ MG.A.all; A_min; A_max ];
-MG.b.all = [ MG.b.all; b_min; b_max ];
+MG.A.all = [ MG.A.all; A_min ];
+MG.b.all = [ MG.b.all; b_min ];
 
 MG_out = MG;
 end

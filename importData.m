@@ -1,10 +1,10 @@
 function MG_out = importData (MG, docString)
-
+rangeT = MG.horizon;
 %UG
 MG.UG.name = {'Utility'};
 [num,~,~] = xlsread( docString, 'Price');
-MG.price.UG_in = num(:,2);
-MG.price.UG_out = num(:,3);
+MG.price.UG_in = num(1:rangeT,2);
+MG.price.UG_out = num(1:rangeT,3);
 clear num;
 rangeV = 1:MG.numofUG;
 [num,txt,~] = xlsread( docString, 'UG');
@@ -18,12 +18,25 @@ for i = 2:size(num, 2)
   end
 end
 clear rangeV num txt;
+
 %CL
 MG.CL.name = {'Cluster1','Cluster2'};
 [num,~,~] = xlsread( docString, 'Price');
-MG.price.CL_in = num(:,4);
-MG.price.CL_out = num(:,5);
+MG.price.CL_in = num(1:rangeT,4);
+MG.price.CL_out = num(1:rangeT,5);
 clear num;
+
+[num,txt,~] = xlsread( docString, 'CL');
+for i = 2:size(num, 2)
+  switch txt{i}
+      case 'CL_in'
+          MG.CL.ub = num(1:rangeT,i);
+      case 'CL_out'
+          MG.CL.lb = num(1:rangeT,i);
+      otherwise
+  end
+end
+clear rangeV num txt;
 
 %ES
 rangeV = 1:MG.numofES;
