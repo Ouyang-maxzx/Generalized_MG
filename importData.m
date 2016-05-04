@@ -1,7 +1,43 @@
 function MG_out = importData (MG, docString)
 rangeT = MG.horizon;
+
+%% Import the number and name of each component
+[~,txt,raw] = xlsread( 'MG1.xlsx', 'INDEX');
+% Import number:
+naviRow = 2; % 'number'
+for j = 2:size(raw, 2) %for each line
+    switch txt{1,j}
+        case 'UG'
+            MG.numofUG = raw{naviRow,j};
+            MG.UG.name = raw(4:4+MG.numofUG-1, j)';
+        case 'CL'
+            MG.numofCL = raw{naviRow,j};
+            MG.CL.name = raw(4:4+MG.numofCL-1, j)';
+        case 'ES'
+            MG.numofES = raw{naviRow,j};
+            %MG.ES.name = raw(4:4+MG.numofES-1, j)';
+        case 'EV'
+            MG.numofEV = raw{naviRow,j};
+            MG.EV.name = raw(4:4+MG.numofEV-1, j)';
+        case 'RE'
+            MG.numofRE = raw{naviRow,j};
+            %MG.RE.name = raw(4:4+MG.numofRE-1, j)';
+        case 'L0'
+            MG.numofL0 = raw{naviRow,j};
+            MG.L0.name = raw(4:4+MG.numofL0-1, j)';
+        case 'L1'
+            MG.numofL1 = raw{naviRow,j};
+            %MG.L1.name = raw(4:4+MG.numofL1-1, j)';
+        case 'L2'
+            MG.numofL2 = raw{naviRow,j};
+            %MG.L2.name = raw(4:4+MG.numofL2-1, j)';
+        otherwise
+    end
+end
+clear naviRow txt raw;
+
+%%  
 %UG
-MG.UG.name = {'Utility'};
 [num,~,~] = xlsread( docString, 'Price');
 MG.price.UG_in = num(1:rangeT,2);
 MG.price.UG_out = num(1:rangeT,3);
@@ -17,10 +53,10 @@ for i = 2:size(num, 2)
       otherwise
   end
 end
-clear rangeV num txt;
+clear i rangeV num txt;
 
 %CL
-MG.CL.name = {'Cluster1','Cluster2'};
+
 [num,~,~] = xlsread( docString, 'Price');
 MG.price.CL_in = num(1:rangeT,4);
 MG.price.CL_out = num(1:rangeT,5);
@@ -36,7 +72,7 @@ for i = 2:size(num, 2)
       otherwise
   end
 end
-clear rangeV num txt;
+clear i rangeV num txt;
 
 %ES
 rangeV = 1:MG.numofES;
@@ -65,15 +101,44 @@ for i = 2:size(raw, 2)
       otherwise
   end
 end
-clear rangeV num txt;
+clear i rangeV num raw;
 
+%NOT INPLEMENTED
+%EV 
+rangeV = 1:MG.numofEV;
+[num,~,raw] = xlsread( docString, 'EV');
+for i = 2:size(raw, 2)
+  switch raw{1,i}
+      case 'EV_name'
+          MG.EV.name = raw(1+rangeV, i)';
+      case 'EV_cost'
+          MG.price.EV_in  =  num(rangeV,i)';
+          MG.price.EV_out = -num(rangeV,i)';
+      case 'EV_in'
+          MG.EV.ub = num(rangeV,i)';
+      case 'EV_out'
+          MG.EV.lb = num(rangeV,i)';
+      case 'EV_cap'
+          MG.EV.cap = num(rangeV,i)';
+      case 'SOC_min'
+          MG.EV.SOC_min = num(rangeV,i)';
+      case 'SOC_max'
+          MG.EV.SOC_max = num(rangeV,i)';
+      case 'SOC_0'
+          MG.EV.SOC_0 = num(rangeV,i)';
+      case 'SOC_T'
+          MG.EV.SOC_T = num(rangeV,i)';
+      otherwise
+  end
+end
+clear i rangeV num raw;
 
 %RE
 rangeV = 1:MG.horizon;
-[num,raw] = xlsread( docString, 'RE');
+[num,~, raw] = xlsread( docString, 'RE');
 MG.RE.value = num(rangeV,2:1+MG.numofRE);
 MG.RE.name = raw(1 , 2:1+MG.numofRE);
-clear num txt;
+clear num raw;
 
 %L0
 rangeV = 1:MG.horizon;
@@ -96,7 +161,7 @@ for i = 2:size(raw, 2)
         otherwise
     end
 end
-clear rangeV rangeH num ~ raw;
+clear rangeV rangeH num raw;
 %L2
 rangeV = 1:MG.horizon;
 rangeH = 1:MG.numofL2;
@@ -110,7 +175,7 @@ for i = 2:size(raw, 2)
         otherwise
     end
 end
-clear rangeV rangeH num ~ raw;
+clear rangeV rangeH num raw;
 
 MG_out = MG;
 end

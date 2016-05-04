@@ -4,7 +4,5 @@ function G = globalSetting( )
 
 G.horizon = 24;
 
-
-
 end
 

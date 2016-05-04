@@ -8,19 +8,12 @@ function MG = MG_dataSetting()
 %MG.L1_out; (flg)
 %MG.L2_out; (flg)
 %MG.L2_ind_s; MG.L2_ind_e;
-%% 
-MG.horizon = 24;
-%% Components
-MG.numofUG = 1;	% Utility grid
-MG.numofCL = 1; % Clutster of neighbourhood
-MG.numofES = 3; % Energy storage
-MG.numofEV = 0; % Electric Vehicle
-MG.numofRE = 1; % Renewables
-MG.numofL0 = 1; % Load type 0 (fixed load)
-MG.numofL1 = 3; % Load type 1 (controllable and interruptible load) 
-MG.numofL2 = 2; % Load type 2 (controllable and uninterruptible load)
 
-MG.EV.name = {'EV1'};
+%% Import from global setting
+MG.horizon = 24;
+MG.timespan = 1;
+%% Components
+MG = importData (MG, 'MG1.xlsx');
 
 %% Indicate the intcon:
 MG.intcon = [ 
@@ -39,21 +32,14 @@ MG.Aeq.all = [];
 MG.beq.all = [];
 MG.lb = [];
 MG.ub = [];
-%% Data
-MG = importData (MG, 'MG1.xlsx');
-%{
-MG.CL.lb = [0 0];
-MG.CL.ub = [0 0]; %Initial state:BECAREFUL
-%}
-
-MG.EV.lb = [-4];
-MG.EV.ub = [4];
+%% 
+% Aggregate the names
 MG.nameall = [MG.UG.name(1:MG.numofUG), MG.CL.name(1:MG.numofCL), MG.ES.name(1:MG.numofES), MG.EV.name(1:MG.numofEV), MG.RE.name(1:MG.numofRE), ...
     MG.L0.name(1:MG.numofL0), MG.L1.name(1:MG.numofL1), MG.L2.name(1:MG.numofL2) ];
 
-%Reshape the contraints for ES
-MG.ES.SOC_max = MG.ES.SOC_max.*MG.ES.cap;
-MG.ES.SOC_min = MG.ES.SOC_min.*MG.ES.cap;
-MG.ES.SOC_0 = MG.ES.SOC_0.*MG.ES.cap;
-MG.ES.SOC_T = MG.ES.SOC_T.*MG.ES.cap;
+%Reshape the contraints for ES: SOC to capacity
+MG.ES.SOC_max = MG.ES.SOC_max.*MG.ES.cap./MG.timespan;
+MG.ES.SOC_min = MG.ES.SOC_min.*MG.ES.cap./MG.timespan;
+MG.ES.SOC_0 = MG.ES.SOC_0.*MG.ES.cap./MG.timespan;
+MG.ES.SOC_T = MG.ES.SOC_T.*MG.ES.cap./MG.timespan;
 end

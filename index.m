@@ -1,5 +1,7 @@
 clear;clc;
 
+
+
 MG = MG_dataSetting();
 
 %% Equality constraints:
