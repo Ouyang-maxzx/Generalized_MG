@@ -23,6 +23,8 @@ MG = reArrange_X( MG );
 % ES SOC should be limited in a range wish upper and lower limits:
 MG = Ineq_ES_SOC( MG );
 MG = Ineq_ES_SOC_T( MG );
+MG = Ineq_EV_SOC( MG );
+MG = Ineq_EV_SOC_T( MG );
 
 % additional constraints for binaries in UG, CL, ES, EV:
 MG = Ineq_UG_in( MG );
