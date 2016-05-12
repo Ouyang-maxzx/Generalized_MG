@@ -29,7 +29,7 @@ A_CL_flg = zeros(numofRows, MG.horizon*MG.numofCL);
 %ES: 
 A_ES = [];
 for i = 1:1:MG.numofES
-    A_ES = blkdiag(A_ES, tril(ones(MG.horizon),0));
+    A_ES = blkdiag(A_ES, tril(ones(MG.horizon),0)) ;
 end
 A_ES_in  = A_ES; 
 A_ES_out = A_ES; 
@@ -66,7 +66,7 @@ Accu_SOC = reshape([A_min; A_max]*MG.x,MG.horizon,2*MG.numofES);
 
 MG.SOC_List = ( -Accu_SOC( 1:MG.horizon, 1:MG.numofES)+repmat(MG.ES.SOC_0, MG.horizon, 1) ) ./ ...
     repmat(MG.ES.cap, MG.horizon, 1) .* 100 ;
-MG.SOC_List = [MG.ES.SOC_0./MG.ES.cap .*100; MG.SOC_List ];
+MG.SOC_List = [MG.ES.SOC_0./MG.ES.cap .*100; MG.SOC_List ] .* MG.timespan;
 
 
 

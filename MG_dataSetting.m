@@ -1,4 +1,4 @@
-function MG = MG_dataSetting()
+function MG = MG_dataSetting( G , MG )
 %% Variables indices:
 %MG.UG_in, MG.UG_out, MG.UG_flg;
 %MG.CL_in, MG.CL_out, MG.CL_flg;
@@ -10,10 +10,11 @@ function MG = MG_dataSetting()
 %MG.L2_ind_s; MG.L2_ind_e;
 
 %% Import from global setting
-MG.horizon = 24;
-MG.timespan = 1;
+
 %% Components
-MG = importData (MG, 'MG1.xlsx');
+indexString = ['MG', num2str( MG.id ), '.xlsx'];
+MG = importData (MG, G, indexString);
+clear indexString;
 
 %% Indicate the intcon:
 MG.intcon = [ 
@@ -34,7 +35,7 @@ MG.lb = [];
 MG.ub = [];
 %% 
 % Aggregate the names
-MG.nameall = [MG.UG.name(1:MG.numofUG), MG.CL.name(1:MG.numofCL), MG.ES.name(1:MG.numofES), MG.EV.name(1:MG.numofEV), MG.RE.name(1:MG.numofRE), ...
+MG.nameall = [{'Time'}, MG.UG.name(1:MG.numofUG), MG.CL.name(1:MG.numofCL), MG.ES.name(1:MG.numofES), MG.EV.name(1:MG.numofEV), MG.RE.name(1:MG.numofRE), ...
     MG.L0.name(1:MG.numofL0), MG.L1.name(1:MG.numofL1), MG.L2.name(1:MG.numofL2) ];
 
 %Reshape the contraints for ES: SOC to capacity
