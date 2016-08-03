@@ -12,8 +12,9 @@ function MG_Group = MG_dataSetting( G  )
 %% Import from global setting
 
 %% Components New
+
 MG_Group = t1_randomMG('mg1.mat', G.t1_MG);
-MG_Group = [ MG_Group; t2_randomMG('mg2.mat', G.t2_MG) ];
+MG_Group = [ MG_Group; t2_randomMG('mg2_agg.mat', G.t2_MG) ];
 MG_Group = [ MG_Group; t3_randomMG('mg3.mat', G.t3_MG) ];
 
 for i = 1:1:G.numofMG
