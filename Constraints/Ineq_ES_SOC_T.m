@@ -61,7 +61,9 @@ A_min = [ ...
     A_L2_in, ...
     A_L2_flg_s, A_L2_flg_e ];
 
-b_min = reshape( -MG.ES.SOC_T+MG.ES.SOC_0, MG.numofES, 1 );
+    b_min = -MG.ES.SOC_T+MG.ES.SOC_0;
+    b_min = b_min(1:MG.numofES)';
+
 
 MG.A.all = [ MG.A.all; A_min ];
 MG.b.all = [ MG.b.all; b_min ];

@@ -25,8 +25,6 @@ for i = 1:G.horizon
        
 end
 
-
-
 for i = 1:G.horizon
    switch allInSum(i,1)
        case G.numofMG

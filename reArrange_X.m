@@ -49,8 +49,8 @@ MG.ub.ES_out = zeros(MG.horizon*MG.numofES, 1);
 MG.lb.ES_flg = zeros(MG.horizon*MG.numofES, 1);
 MG.ub.ES_flg = ones(MG.horizon*MG.numofES, 1);
     %price
-MG.price.ES_in = reshape( repmat( MG.price.ES_in, MG.horizon, 1 ), [], 1);
-MG.price.ES_out = reshape( repmat( MG.price.ES_out, MG.horizon, 1 ), [], 1);
+MG.price.ES_in = reshape( repmat( MG.price.ES_in(1:MG.numofES), MG.horizon, 1 ), [], 1);
+MG.price.ES_out = reshape( repmat( MG.price.ES_out(1:MG.numofES), MG.horizon, 1 ), [], 1);
 %% EV
 MG.lb.EV_in = zeros(MG.horizon*MG.numofEV, 1);
 MG.ub.EV_in = reshape( repmat(MG.EV.ub(1:MG.numofEV), MG.horizon, 1), [], 1 );

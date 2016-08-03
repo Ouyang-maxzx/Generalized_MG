@@ -64,9 +64,9 @@ A_max = -A_min;
 
 Accu_SOC = reshape([A_min; A_max]*MG.x,MG.horizon,2*MG.numofES);
 
-MG.SOC_List = ( -Accu_SOC( 1:MG.horizon, 1:MG.numofES)+repmat(MG.ES.SOC_0, MG.horizon, 1) ) ./ ...
-    repmat(MG.ES.cap, MG.horizon, 1) .* 100 ;
-MG.SOC_List = [MG.ES.SOC_0./MG.ES.cap .*100; MG.SOC_List ] .* MG.timespan;
+MG.SOC_List = ( -Accu_SOC( 1:MG.horizon, 1:MG.numofES)+repmat(MG.ES.SOC_0(1:MG.numofES), MG.horizon, 1) ) ./ ...
+    repmat(MG.ES.cap(1:MG.numofES), MG.horizon, 1) .* 100 ;
+MG.SOC_List = [MG.ES.SOC_0(1:MG.numofES)./MG.ES.cap(1:MG.numofES) .*100; MG.SOC_List ] .* MG.timespan;
 
 
 

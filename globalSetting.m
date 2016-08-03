@@ -3,8 +3,13 @@ function G = globalSetting( )
 %   Detailed explanation goes here
 
 G.horizon = 24;
-G.numofMG = 2;
 G.timespan = 1;
+
+G.t1_MG = 30;
+G.t2_MG = 30;
+G.t3_MG = 20;
+
+G.numofMG = G.t1_MG + G.t2_MG + G.t3_MG ;
 
 end
 

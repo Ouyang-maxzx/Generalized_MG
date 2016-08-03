@@ -27,12 +27,15 @@ r_L0 = MG.L0.value(1 : MG.horizon, 1:MG.numofL0);
 %L1:
 r_L1 = reshape( MG.x(  MG.horizon*(3*MG.numofUG+3*MG.numofCL+3*MG.numofES+3*MG.numofEV+MG.numofRE+MG.numofL0)+1 : ...
     MG.horizon*(3*MG.numofUG+3*MG.numofCL+3*MG.numofES+3*MG.numofEV+MG.numofRE+MG.numofL0+MG.numofL1) ), [], MG.numofL1);
-r_L1 = r_L1 .* MG.L1.value(1 : MG.horizon, 1:MG.numofL1);
+if isempty(r_L1) ==0
+    r_L1 = r_L1 .* MG.L1.value(1 : MG.horizon, 1:MG.numofL1);
+end
 %L2:
 r_L2 =  reshape( MG.x( MG.horizon*(3*MG.numofUG+3*MG.numofCL+3*MG.numofES+3*MG.numofEV+MG.numofRE+MG.numofL0+MG.numofL1)+1 : ...
     MG.horizon*(3*MG.numofUG+3*MG.numofCL+3*MG.numofES+3*MG.numofEV+MG.numofRE+MG.numofL0+MG.numofL1+MG.numofL2) ), [], MG.numofL2);
-r_L2 = r_L2 .* MG.L2.value(1 : MG.horizon, 1:MG.numofL2);
-
+if isempty(r_L2) ==0
+    r_L2 = r_L2 .* MG.L2.value(1 : MG.horizon, 1:MG.numofL2);
+end
 
 MG.result = [r_UG, r_CL, r_ES, r_EV, r_RE, r_L0, r_L1, r_L2 ];
 MG_out = MG;
