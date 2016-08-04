@@ -47,6 +47,12 @@ MG = MG_Group{i,1};
     MG.ES.SOC_0 = MG.ES.SOC_0.*MG.ES.cap./MG.timespan;
     MG.ES.SOC_T = MG.ES.SOC_T.*MG.ES.cap./MG.timespan;
 
+    MG.EV.SOC_max = MG.EV.SOC_max.*MG.EV.cap./MG.timespan;
+    MG.EV.SOC_min = MG.EV.SOC_min.*MG.EV.cap./MG.timespan;
+    MG.EV.SOC_0 = MG.EV.SOC_0.*MG.EV.cap./MG.timespan;
+    MG.EV.SOC_T = MG.EV.SOC_T.*MG.EV.cap./MG.timespan;
+    
+    
 MG_Group{i,1} = MG;
 end
 

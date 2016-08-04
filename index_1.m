@@ -5,7 +5,7 @@ G = globalSetting();
 %%
 MG_Group = MG_dataSetting(G);
 parTime = tic();
-parfor M_index = 1:G.numofMG;
+for M_index = 1:G.numofMG;
     MG = MG_Group{M_index, 1};
     %% Add All constraints:
     MG = AddAllConstraints( MG );

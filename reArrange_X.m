@@ -61,6 +61,8 @@ MG.ub.EV_out = zeros(MG.horizon*MG.numofEV, 1);
 MG.lb.EV_flg = zeros(MG.horizon*MG.numofEV, 1);
 MG.ub.EV_flg = ones(MG.horizon*MG.numofEV, 1);
 
+MG.price.EV_in = reshape( repmat( MG.price.EV_in(1:MG.numofES), MG.horizon, 1 ), [], 1);
+MG.price.EV_out = reshape( repmat( MG.price.EV_out(1:MG.numofES), MG.horizon, 1 ), [], 1);
 %% RE flag: should be always 1
 MG.lb.RE_flg = reshape(ones(MG.horizon, MG.numofRE), [],1);
 MG.ub.RE_flg = reshape(ones(MG.horizon, MG.numofRE), [],1);

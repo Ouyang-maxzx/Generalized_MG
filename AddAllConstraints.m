@@ -20,6 +20,7 @@ MG = reArrange_X( MG );
 % ES SOC should be limited in a range wish upper and lower limits:
 MG = Ineq_ES_SOC( MG );
 MG = Ineq_ES_SOC_T( MG );
+%EV SOC
 MG = Ineq_EV_SOC( MG );
 MG = Ineq_EV_SOC_T( MG );
 
@@ -28,10 +29,12 @@ MG = Ineq_UG_in( MG );
 MG = Ineq_UG_out( MG );
 MG = Ineq_CL_in( MG );  %Particularly
 MG = Ineq_CL_out( MG ); %Particularly
-MG = Ineq_ES_in( MG );
-MG = Ineq_ES_out( MG );
-MG = Ineq_EV_in( MG );
-MG = Ineq_EV_out( MG );
+MG = Ineq_ES_in( MG ); %Input power of ES
+MG = Ineq_ES_out( MG ); % output power of ES
+MG = Ineq_EV_in( MG );  %input of EV
+MG = Ineq_EV_out( MG ); %oyutput of EV
+
+% Additionally, set the EV operating range
 
 %% Inequality constraints: lb<=x<=ub
 MG = Ineq_X( MG ); 
