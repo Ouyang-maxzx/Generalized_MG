@@ -2,7 +2,6 @@ function MG_out  = shapeResults( MG )
 %UNTITLED Summary of this function goes here
 %   Detailed explanation goes here
 
-r_TIME = MG.timeframe(1 : MG.horizon);
 %UG: 
 r_UG = reshape( MG.x( 1 : MG.horizon*(2*MG.numofUG) ), [], 2);
 r_UG = sum(r_UG, 2);
@@ -20,7 +19,6 @@ r_EV = reshape( MG.x( MG.horizon*(3*MG.numofUG+3*MG.numofCL+3*MG.numofES)+1 : MG
 r_EV = sum(r_EV, 2);
 r_EV = reshape( r_EV, [], MG.numofEV );
 %RE:
-%r_RE = reshape( MG.x( MG.horizon*(3*MG.numofUG+3*MG.numofCL+3*MG.numofES+3*MG.numofEV)+1   ), [], 2);
 r_RE = MG.RE.value(1 : MG.horizon, 1:MG.numofRE);
 %L0:
 r_L0 = MG.L0.value(1 : MG.horizon, 1:MG.numofL0);

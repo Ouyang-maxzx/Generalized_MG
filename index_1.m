@@ -5,13 +5,13 @@ G = globalSetting();
 %%
 MG_Group = MG_dataSetting(G);
 parTime = tic();
-parfor M_index = 1:G.numofMG;
+for M_index = 1:G.numofMG;
     MG = MG_Group{M_index, 1};
     %% Add All constraints:
     MG = AddAllConstraints( MG );
     
     %% Objective function
-    MG = AddObjFunction( MG );
+    MG = AddObjFunction( MG, G );
     
     %% Calculation: MILP
     MG.processTime = tic;
@@ -24,8 +24,10 @@ parfor M_index = 1:G.numofMG;
     %% Shape the results
     MG = shapeResults( MG );
     MG = cal_SOC(MG);
-    MG.resultTable = array2table([MG.timeframe(1 : MG.horizon), MG.result ], ...
+    %{
+MG.resultTable = array2table([MG.timeframe(1 : MG.horizon), MG.result ], ...
         'VariableNames',MG.nameall);
+    %}
     MG_Group{M_index, 1} =formalize2G( MG, G );
     
 
@@ -44,7 +46,7 @@ for i = 1:G.numofMG
     MG_out(:,i) = MG_Group{i,1}.result2G(:,1);
 end
 %Make pairings
-T = 24;
+T = G.horizon;
 Final = cell(T,1);
 for t = 1:1:T
    [~,~,~,Final{t,1}] = wtf_1(W{t,1},MG_out(t,:) );

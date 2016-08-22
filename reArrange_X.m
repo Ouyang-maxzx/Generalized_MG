@@ -23,22 +23,22 @@ MG.ub.UG_out = zeros(MG.horizon*MG.numofUG, 1);
 MG.lb.UG_flg = zeros(MG.horizon*MG.numofUG, 1);
 MG.ub.UG_flg =  ones(MG.horizon*MG.numofUG, 1);
 
-MG.price.UG_in = reshape( MG.price.UG_in, [], 1 );
-MG.price.UG_out = reshape( MG.price.UG_out, [], 1 );
+%MG.price.UG_in = reshape( MG.price.UG_in, [], 1 );
+%MG.price.UG_out = reshape( MG.price.UG_out, [], 1 );
 %% CL
 MG.lb.CL_in = zeros(MG.horizon*MG.numofCL, 1);
-%MG.ub.CL_in = reshape( repmat(MG.CL.ub(1:MG.numofCL), MG.horizon, 1), [], 1 );
-MG.ub.CL_in = MG.CL.ub ;
+MG.ub.CL_in = reshape( repmat(MG.CL.ub(1:MG.numofCL), MG.horizon, 1), [], 1 );
+%MG.ub.CL_in = MG.CL.ub;
 
-%MG.lb.CL_out = reshape( repmat(MG.CL.lb(1:MG.numofCL), MG.horizon, 1), [], 1 );
+MG.lb.CL_out = reshape( repmat(MG.CL.lb(1:MG.numofCL), MG.horizon, 1), [], 1 );
 MG.ub.CL_out = zeros(MG.horizon*MG.numofCL, 1);
-MG.lb.CL_out = MG.CL.lb ;
+%MG.lb.CL_out = MG.CL.lb ;
 
 MG.lb.CL_flg = zeros(MG.horizon*MG.numofCL, 1);
 MG.ub.CL_flg = ones(MG.horizon*MG.numofCL, 1);
 	%price
-MG.price.CL_in = reshape( repmat( MG.price.CL_in, 1, MG.numofCL ), [], 1);
-MG.price.CL_out = reshape( repmat( MG.price.CL_out, 1, MG.numofCL ), [], 1);
+%MG.price.CL_in = reshape( repmat( MG.price.CL_in, 1, MG.numofCL ), [], 1);
+%MG.price.CL_out = reshape( repmat( MG.price.CL_out, 1, MG.numofCL ), [], 1);
 %% ES
 MG.lb.ES_in = zeros(MG.horizon*MG.numofES, 1);
 MG.ub.ES_in = reshape( repmat(MG.ES.ub(1:MG.numofES), MG.horizon, 1), [], 1 );

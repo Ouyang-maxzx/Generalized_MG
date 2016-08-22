@@ -13,9 +13,14 @@ function MG_Group = MG_dataSetting( G  )
 
 %% Components New
 
-MG_Group = t1_randomMG('mg1.mat', G.t1_MG);
-MG_Group = [ MG_Group; t2_randomMG('mg2_agg.mat', G.t2_MG) ];
-MG_Group = [ MG_Group; t3_randomMG('mg3.mat', G.t3_MG) ];
+%MG_Group = t1_randomMG('mg1.mat', G.t1_MG);
+%MG_Group = [ MG_Group; t2_randomMG('mg2_agg.mat', G.t2_MG) ];
+%MG_Group = [ MG_Group; t3_randomMG('mg3.mat', G.t3_MG) ];
+
+MG_Group = cell(30,1);
+for p = 1:30
+    MG_Group{p,1} = mg_case1;
+end
 
 for i = 1:1:G.numofMG
 MG = MG_Group{i,1};
@@ -42,16 +47,16 @@ MG = MG_Group{i,1};
     MG.L0.name(1:MG.numofL0), MG.L1.name(1:MG.numofL1), MG.L2.name(1:MG.numofL2) ];
 
     %Reshape the contraints for ES: SOC to capacity
-    MG.ES.SOC_max = MG.ES.SOC_max.*MG.ES.cap./MG.timespan;
-    MG.ES.SOC_min = MG.ES.SOC_min.*MG.ES.cap./MG.timespan;
-    MG.ES.SOC_0 = MG.ES.SOC_0.*MG.ES.cap./MG.timespan;
-    MG.ES.SOC_T = MG.ES.SOC_T.*MG.ES.cap./MG.timespan;
+    MG.ES.SOC_max = MG.ES.SOC_max.*MG.ES.cap./MG.timespan.*60;
+    MG.ES.SOC_min = MG.ES.SOC_min.*MG.ES.cap./MG.timespan.*60;
+    MG.ES.SOC_0 = MG.ES.SOC_0.*MG.ES.cap./MG.timespan.*60;
+    MG.ES.SOC_T = MG.ES.SOC_T.*MG.ES.cap./MG.timespan.*60;
 
-    MG.EV.SOC_max = MG.EV.SOC_max.*MG.EV.cap./MG.timespan;
-    MG.EV.SOC_min = MG.EV.SOC_min.*MG.EV.cap./MG.timespan;
-    MG.EV.SOC_0 = MG.EV.SOC_0.*MG.EV.cap./MG.timespan;
-    MG.EV.SOC_T = MG.EV.SOC_T.*MG.EV.cap./MG.timespan;
-    
+    MG.EV.SOC_max = MG.EV.SOC_max.*MG.EV.cap./MG.timespan.*60;
+    MG.EV.SOC_min = MG.EV.SOC_min.*MG.EV.cap./MG.timespan.*60;
+    MG.EV.SOC_0 = MG.EV.SOC_0.*MG.EV.cap./MG.timespan.*60;
+    MG.EV.SOC_T = MG.EV.SOC_T.*MG.EV.cap./MG.timespan.*60;
+
     
 MG_Group{i,1} = MG;
 end
