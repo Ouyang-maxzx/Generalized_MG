@@ -11,5 +11,7 @@ G.t3_MG = 5;
 
 G.numofMG = G.t1_MG + G.t2_MG + G.t3_MG ;
 
+
+G.belta = 0; %percetage of profit shared by DSO;
 end
 

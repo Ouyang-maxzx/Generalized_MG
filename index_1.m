@@ -5,7 +5,7 @@ G = globalSetting();
 %%
 MG_Group = MG_dataSetting(G);
 parTime = tic();
-for M_index = 1:G.numofMG;
+parfor M_index = 1:G.numofMG;
     MG = MG_Group{M_index, 1};
     %% Add All constraints:
     MG = AddAllConstraints( MG );
@@ -50,4 +50,13 @@ for t = 1:1:T
    [~,~,~,Final{t,1}] = wtf_1(W{t,1},MG_out(t,:) );
 end
 
+
+MG_out_add = zeros(T,G.numofMG);
+for t = 1:1:T
+    MG_out_add(t,:) =  sum( Final{t,1}, 1);
+end
+
+MG_p = MG_out + MG_out_add;
+%Total exchanged energy
+MG_out_p = sum( (MG_out_add>0).*MG_out_add, 2 );
 
