@@ -9,10 +9,7 @@ function MG_Group = MG_dataSetting( G  )
 %MG.L2_out; (flg)
 %MG.L2_ind_s; MG.L2_ind_e;
 
-%% Import from global setting
-
 %% Components New
-
 %MG_Group = t1_randomMG('mg1.mat', G.t1_MG);
 %MG_Group = [ MG_Group; t2_randomMG('mg2_agg.mat', G.t2_MG) ];
 %MG_Group = [ MG_Group; t3_randomMG('mg3.mat', G.t3_MG) ];
