@@ -11,14 +11,22 @@ function MG_Group = MG_dataSetting( G  )
 
 %% Components New
 %MG_Group = t1_randomMG('mg1.mat', G.t1_MG);
-%MG_Group = [ MG_Group; t2_randomMG('mg2_agg.mat', G.t2_MG) ];
-%MG_Group = [ MG_Group; t3_randomMG('mg3.mat', G.t3_MG) ];
 
-MG_Group = cell(30,1);
-for p = 1:30
-    MG_Group{p,1} = mg_case1;
+for p = 1:G.t1_MG
+    MG_Group{p,1} = mg_case1( p, G.data1);
+end
+for p = G.t1_MG+1:G.t1_MG+G.t2_MG
+    MG_Group{p,1} = mg_case2( p, G.data2);
+end
+for p = G.t1_MG+G.t2_MG+1:G.numofMG
+    MG_Group{p,1} = mg_case3( p, G.data3);
 end
 
+%{
+%MG_Group = cell(G.t1_MG,1);
+MG_Group = [ MG_Group; t2_randomMG('mg2_agg.mat', G.t2_MG) ];
+MG_Group = [ MG_Group; t3_randomMG('mg3.mat', G.t3_MG) ];
+%}
 for i = 1:1:G.numofMG
 MG = MG_Group{i,1};
     %% Indicate the intcon:
@@ -38,23 +46,23 @@ MG = MG_Group{i,1};
     MG.beq.all = [];
     MG.lb = [];
     MG.ub = [];
-    %% 
+    
+   %% 
     % Aggregate the names
-    MG.nameall = [{'Time'}, MG.UG.name(1:MG.numofUG), MG.CL.name(1:MG.numofCL), MG.ES.name(1:MG.numofES), MG.EV.name(1:MG.numofEV), MG.RE.name(1:MG.numofRE), ...
-    MG.L0.name(1:MG.numofL0), MG.L1.name(1:MG.numofL1), MG.L2.name(1:MG.numofL2) ];
+    MG = add_name (MG);
 
     %Reshape the contraints for ES: SOC to capacity
-    MG.ES.SOC_max = MG.ES.SOC_max.*MG.ES.cap./MG.timespan.*60;
-    MG.ES.SOC_min = MG.ES.SOC_min.*MG.ES.cap./MG.timespan.*60;
-    MG.ES.SOC_0 = MG.ES.SOC_0.*MG.ES.cap./MG.timespan.*60;
-    MG.ES.SOC_T = MG.ES.SOC_T.*MG.ES.cap./MG.timespan.*60;
+    MG.ES.SOC_min = MG.ES.SOC_range(1).*MG.ES.cap./MG.timespan.*60;
+    MG.ES.SOC_max = MG.ES.SOC_range(2).*MG.ES.cap./MG.timespan.*60;
+    MG.ES.SOC_0 = MG.ES.SOC_ST(1).*MG.ES.cap./MG.timespan.*60;
+    MG.ES.SOC_T = MG.ES.SOC_ST(2).*MG.ES.cap./MG.timespan.*60;
+    if MG.numofEV >=1
+    %Reshape the contraints for EV: SOC to capacity
+    MG.EV.SOC_min = MG.EV.SOC_range(1).*MG.EV.cap./MG.timespan.*60;
+    MG.EV.SOC_max = MG.EV.SOC_range(2).*MG.EV.cap./MG.timespan.*60;
+    MG.EV.SOC = MG.EV.SOC.*MG.EV.cap./MG.timespan.*60;
+    end
 
-    MG.EV.SOC_max = MG.EV.SOC_max.*MG.EV.cap./MG.timespan.*60;
-    MG.EV.SOC_min = MG.EV.SOC_min.*MG.EV.cap./MG.timespan.*60;
-    MG.EV.SOC_0 = MG.EV.SOC_0.*MG.EV.cap./MG.timespan.*60;
-    MG.EV.SOC_T = MG.EV.SOC_T.*MG.EV.cap./MG.timespan.*60;
-
-    
 MG_Group{i,1} = MG;
 end
 

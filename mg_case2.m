@@ -1,8 +1,8 @@
-function MG = mg_case1(numofIndex,Gdata)
+function MG = mg_case2(numofIndex,Gdata)
 
 %% Type
-MG.casetype = 1;
-MG.case = 'home_1';
+MG.casetype = 2;
+MG.case = 'home_2';
 
 %% number of components:
 %{
@@ -36,13 +36,14 @@ MG.ES.SOC_range = Gdata.ES.SOC_range(numofIndex,:);
 MG.ES.SOC_ST = Gdata.ES.SOC_ST(numofIndex,:);
 
 %% EV: (1)
-MG.numofEV = 1;
+MG.numofEV = 0;
+%{
 MG.EV = Model_EV( MG.casetype ); %declare the type;
 MG.EV.SOC_range = Gdata.EV.SOC_range(numofIndex,:);
 MG.EV.SOC = Gdata.EV.SOC(numofIndex, :);
 MG.EV.avbl_h =Gdata.EV.avbl_h(numofIndex, :); 
 MG.EV.flag = 1;
-
+%}
 %% RE: (1)
 MG.numofRE = 1;
 MG.RE.name = 'PV1';

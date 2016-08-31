@@ -1,7 +1,6 @@
 function MG_out = add_load (MG, loadString,load_type)
 
-%% Define "dish washer"
-
+%% Define all the loads
 load = loadCluster(loadString);
 %%
 switch load_type

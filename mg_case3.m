@@ -1,8 +1,8 @@
-function MG = mg_case1(numofIndex,Gdata)
+function MG = mg_case3(numofIndex,Gdata)
 
 %% Type
-MG.casetype = 1;
-MG.case = 'home_1';
+MG.casetype = 3;
+MG.case = 're_station';
 
 %% number of components:
 %{
@@ -36,13 +36,14 @@ MG.ES.SOC_range = Gdata.ES.SOC_range(numofIndex,:);
 MG.ES.SOC_ST = Gdata.ES.SOC_ST(numofIndex,:);
 
 %% EV: (1)
-MG.numofEV = 1;
+MG.numofEV = 0;
+%{
 MG.EV = Model_EV( MG.casetype ); %declare the type;
 MG.EV.SOC_range = Gdata.EV.SOC_range(numofIndex,:);
 MG.EV.SOC = Gdata.EV.SOC(numofIndex, :);
 MG.EV.avbl_h =Gdata.EV.avbl_h(numofIndex, :); 
 MG.EV.flag = 1;
-
+%}
 %% RE: (1)
 MG.numofRE = 1;
 MG.RE.name = 'PV1';
@@ -54,7 +55,7 @@ MG.L0.name = 'base_load';
 MG.L0.value = Gdata.L0(numofIndex, :)';
 
 %% L1: (X)
-MG.numofL1 = 4;
+MG.numofL1 = 0;
 MG.L1 = struct('value',[],'name',[],'avbl_hours',[]); 
 if MG.numofL1 >= 1
     MG = add_load(MG,'washing_machine',1); 
@@ -64,7 +65,7 @@ if MG.numofL1 >= 1
 end
 
 %% L2: (X)
-MG.numofL2 = 2;
+MG.numofL2 = 0;
 MG.L2 = struct('value',[],'name',[],'avbl_hours',[]);
 if MG.numofL2 >= 1
     MG = add_load(MG,'dish_washer',2);

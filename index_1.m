@@ -1,33 +1,31 @@
 clear;clc;
 
 G = globalSetting();
-Gdata = gen_type1_data(G.numofMG);
 
 %%
 MG_Group = MG_dataSetting(G);
-%% 
 parTime = tic();
 for M_index = 1:G.numofMG;
     MG = MG_Group{M_index, 1};
     %% Add All constraints:
     MG = AddAllConstraints( MG );
+    
     %% Objective function
-    MG = AddObjFunction( MG, G ); 
+    MG = AddObjFunction( MG );
+    
     %% Calculation: MILP
     MG.processTime = tic;
-    [MG.x,fval,exitflag,output] = intlinprog(MG.f, MG.intcon,...
+    [MG.x,MG.fval,MG.exitflag,MG.output] = intlinprog(MG.f, MG.intcon,...
         MG.A.all, MG.b.all,...
         MG.Aeq.all, MG.beq.all, ...
         MG.lb.all, MG.ub.all);
     MG.processTime = toc( MG.processTime );
+    
     %% Shape the results
     MG = shapeResults( MG );
     MG = cal_SOC(MG);
-    MG.timeframe = ( linspace(0, 24, MG.horizon) )';
-    MG.resultTable = array2table([MG.timeframe, MG.result ], ...
+    MG.resultTable = array2table([MG.timeframe(1 : MG.horizon), MG.result ], ...
         'VariableNames',MG.nameall);
-
-    
     MG_Group{M_index, 1} =formalize2G( MG, G );
     
 end
@@ -45,19 +43,8 @@ for i = 1:G.numofMG
     MG_out(:,i) = MG_Group{i,1}.result2G(:,1);
 end
 %Make pairings
-T = G.horizon;
+T = 24;
 Final = cell(T,1);
 for t = 1:1:T
    [~,~,~,Final{t,1}] = wtf_1(W{t,1},MG_out(t,:) );
 end
-
-
-MG_out_add = zeros(T,G.numofMG);
-for t = 1:1:T
-    MG_out_add(t,:) =  sum( Final{t,1}, 1);
-end
-
-MG_p = MG_out + MG_out_add;
-%Total exchanged energy
-MG_out_p = sum( (MG_out_add>0).*MG_out_add, 2 );
-

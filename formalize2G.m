@@ -14,7 +14,7 @@ ratio = G.timespan/MG.timespan;
 
         MG_out = MG;
     else
-        error('formalize2G to be contnued');
+        error('error formalize2G');
     end 
 end
 

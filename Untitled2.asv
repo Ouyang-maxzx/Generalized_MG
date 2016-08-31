@@ -1,0 +1,28 @@
+MG.EV.avbl_char_T = [];
+A = [];
+i = 1;
+for t = 0: 1*MG.timespan/60 :MG.hours
+    if t>= MG.EV.avbl_h(i) && t < MG.EV.avbl_h(i+1)
+        MG.EV.avbl_char_T = [MG.EV.avbl_char_T; (MG.EV.flag==1)];
+        b =
+    else
+        MG.EV.avbl_char_T = [MG.EV.avbl_char_T; (MG.EV.flag~=1)];
+        if MG.EV.flag == 1
+            start_p = round(MG.EV.avbl_h(i)*60/MG.timespan);
+            end_p = round(MG.EV.avbl_h(i+1)*60/MG.timespan);
+            rows = end_p - start_p;
+            terminal_p = round(MG.EV.avbl_h( size(MG.EV.avbl_h,2) )*60/MG.timespan);
+            A_temp = [zeros(rows, start_p), tril(ones( rows, rows )), zeros(rows, terminal_p-end_p)];
+            clear start_p end_p rows terminal_p;
+            if isempty(A) ~=1
+                A = [A; A_temp];
+            else
+                A = A_temp;
+            end
+        end
+        i = i+1;
+        MG.EV.flag = (MG.EV.flag~=1);
+    end
+end
+MG.EV.avbl_char_T(size(MG.EV.avbl_char_T, 1)) = [];
+

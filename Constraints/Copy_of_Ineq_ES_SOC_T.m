@@ -1,4 +1,4 @@
-function MG_out = Ineq_EV_SOC_T( MG )
+function MG_out = Ineq_ES_SOC_T( MG )
 %UNTITLED10 Summary of this function goes here
 %   Detailed explanation goes here
 %% Variables indices:
@@ -11,11 +11,11 @@ function MG_out = Ineq_EV_SOC_T( MG )
 %MG.L2_out; (flg)
 %MG.L2_ind_s; MG.L2_ind_e;
 
-numofRows = MG.numofEV;
-%EV SOC
-A_EV = [];
-for i = 1:1:MG.numofEV
-    A_EV = blkdiag(A_EV, tril(ones(MG.horizon),0));
+numofRows = MG.numofES;
+%ES SOC
+A_ES = [];
+for i = 1:1:MG.numofES
+    A_ES = blkdiag(A_ES, tril(ones(MG.horizon),0));
 end
 
 %UG:
@@ -27,16 +27,16 @@ A_CL_in  = zeros(numofRows, MG.horizon*MG.numofCL);
 A_CL_out = zeros(numofRows, MG.horizon*MG.numofCL);
 A_CL_flg = zeros(numofRows, MG.horizon*MG.numofCL);
 %ES: 
-A_ES_in  = zeros(numofRows, MG.horizon*MG.numofES);
-A_ES_out = zeros(numofRows, MG.horizon*MG.numofES);
+A_ES = [];
+for i = 1:1:MG.numofES
+    A_ES = blkdiag(A_ES, ones(1,MG.horizon));
+end
+A_ES_in  = A_ES; 
+A_ES_out = A_ES; 
 A_ES_flg = zeros(numofRows, MG.horizon*MG.numofES);
 %EV: 
-A_EV = [];
-for i = 1:1:MG.numofEV
-    A_EV = blkdiag(A_EV, ones(1,MG.horizon));
-end
-A_EV_in  = A_EV; 
-A_EV_out = A_EV; 
+A_EV_in  = zeros(numofRows, MG.horizon*MG.numofEV);
+A_EV_out = zeros(numofRows, MG.horizon*MG.numofEV);
 A_EV_flg = zeros(numofRows, MG.horizon*MG.numofEV);
 %RE: (flg)
 A_RE_in  = zeros(numofRows, MG.horizon*MG.numofRE);
@@ -61,7 +61,9 @@ A_min = [ ...
     A_L2_in, ...
     A_L2_flg_s, A_L2_flg_e ];
 
-b_min = reshape( -MG.EV.SOC_T+MG.EV.SOC_0, MG.numofEV, 1 );
+    b_min = -MG.ES.SOC_T+MG.ES.SOC_0;
+    b_min = b_min(1:MG.numofES)';
+
 
 MG.A.all = [ MG.A.all; A_min ];
 MG.b.all = [ MG.b.all; b_min ];

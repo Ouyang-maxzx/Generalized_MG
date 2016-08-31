@@ -25,6 +25,7 @@ PV = [
 0
 0
 0 ];
+
 value = [];
 if length(PV) == 24
     PV = [PV; 0]; % Add a zero at last to form the last hour
