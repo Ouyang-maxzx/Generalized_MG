@@ -1,8 +1,8 @@
-function MG = mg_case2(numofIndex,Gdata)
+function MG = mg_aprt(numofIndex,Gdata)
 
 %% Type
 MG.casetype = 2;
-MG.case = 'home_2';
+MG.case = 'aprt_1';
 
 %% number of components:
 %{

@@ -1,4 +1,4 @@
-function MG_Group = MG_dataSetting( G  )
+function MG_Group = initial_MG( G  )
 %% Variables indices:
 %MG.UG_in, MG.UG_out, MG.UG_flg;
 %MG.CL_in, MG.CL_out, MG.CL_flg;
@@ -10,23 +10,27 @@ function MG_Group = MG_dataSetting( G  )
 %MG.L2_ind_s; MG.L2_ind_e;
 
 %% Components New
-%MG_Group = t1_randomMG('mg1.mat', G.t1_MG);
+MG_Group = cell(G.numofMG,1);
+numofIndex = 1;
+for i = 1:1:G.t1_h1
+    MG_Group{numofIndex} = mg_house1( i, G.data.t1_h1);
+    numofIndex = numofIndex + 1;
+end
+for i = 1:1:G.t1_h2
+    MG_Group{numofIndex} = mg_house2( i, G.data.t1_h2);
+    numofIndex = numofIndex + 1;
+end
+for i = 1:1:G.t2_MG
+    MG_Group{numofIndex} = mg_aprt( i, G.data.t2);
+    numofIndex = numofIndex + 1;
+end
+for i = 1:1:G.t3_MG
+    MG_Group{numofIndex} = mg_res( i, G.data.t3);
+    numofIndex = numofIndex + 1;
+end
 
-for p = 1:G.t1_MG
-    MG_Group{p,1} = mg_case1( p, G.data1);
-end
-for p = G.t1_MG+1:G.t1_MG+G.t2_MG
-    MG_Group{p,1} = mg_case2( p, G.data2);
-end
-for p = G.t1_MG+G.t2_MG+1:G.numofMG
-    MG_Group{p,1} = mg_case3( p, G.data3);
-end
 
-%{
-%MG_Group = cell(G.t1_MG,1);
-MG_Group = [ MG_Group; t2_randomMG('mg2_agg.mat', G.t2_MG) ];
-MG_Group = [ MG_Group; t3_randomMG('mg3.mat', G.t3_MG) ];
-%}
+
 for i = 1:1:G.numofMG
 MG = MG_Group{i,1};
     %% Indicate the intcon:

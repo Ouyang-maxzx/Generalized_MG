@@ -1,10 +1,9 @@
 clear;clc;
-
+load('G');
 G = globalSetting();
-Gdata = gen_type1_data(G.numofMG);
 
 %%
-MG_Group = MG_dataSetting(G);
+MG_Group = initial_MG(G);
 %% 
 parTime = tic();
 for M_index = 1:G.numofMG;
@@ -23,6 +22,7 @@ for M_index = 1:G.numofMG;
     %% Shape the results
     MG = shapeResults( MG );
     MG = cal_SOC(MG);
+    %MG = cal_SOC_EV(MG);
     MG.timeframe = ( linspace(0, 24, MG.horizon) )';
     MG.resultTable = array2table([MG.timeframe, MG.result ], ...
         'VariableNames',MG.nameall);

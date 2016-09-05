@@ -12,11 +12,6 @@ function MG_out = cal_SOC( MG )
 %MG.L2_ind_s; MG.L2_ind_e;
 
 numofRows = MG.horizon*MG.numofES;
-%ES SOC
-A_ES = [];
-for i = 1:1:MG.numofES
-    A_ES = blkdiag(A_ES, tril(ones(MG.horizon),0));
-end
 
 %UG:
 A_UG_in  = zeros(numofRows, MG.horizon*MG.numofUG);
